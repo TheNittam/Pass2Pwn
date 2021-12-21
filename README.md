@@ -1,0 +1,2 @@
+# Pass2Pwn
+Pass2Pwn is a simple Python3 tool created to assist penetration testers generate possible passwords for a targeted system based solely on the targeted organization's name. Although Pass2Pwn does not have the capacity to generate as many passwords as other tools, I have attempted to implement a mechanism that generates passwords using the most common password pattern that we notice in general, which is correlated to the organization name.
