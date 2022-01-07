@@ -53,7 +53,8 @@ def run():
 			word = [w[0] for w in word]
 			word = "".join(word)
 		
-		pwdlst = input(f"Save as [\"{colors.OKGREEN+colors.BOLD+word}.txt{colors.ENDC}\"] : ") or word
+		defaultlst = word.replace("\\", "_").replace("/", "_") 
+		pwdlst = input(f"Save as [\"{colors.OKGREEN+colors.BOLD+defaultlst}.txt{colors.ENDC}\"] : ") or defaultlst
 
 		print("_"*65)
 		print(f"\nCreating a List of Common Passwords({colors.OKGREEN+colors.BOLD}"+pwdlst+f".txt{colors.ENDC})")
