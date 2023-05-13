@@ -53,7 +53,7 @@ def main():
     filename = input(f"Save as [\"{colors.OKGREEN+colors.BOLD+word}.txt{colors.ENDC}\"] : ")  or word
     passwords = generate_passwords(word)
     print("_"*65)
-    print(f"\nCreating a List of Common Passwords({colors.OKGREEN+colors.BOLD}"+filename+".txt{colors.ENDC})")
+    print(f"\nCreating a List of Common Passwords({colors.OKGREEN+colors.BOLD}"+filename+f".txt{colors.ENDC})")
     print("_"*65+"\n")
     save_passwords(passwords, filename)
     print("_"*65+f"\n\n\tWorking with you has been a true blessing...{os.environ['USER']}")
