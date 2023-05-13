@@ -1,7 +1,8 @@
 #/!python
 #!/usr/bin/python
-
-import time,pathlib,os
+#import time,pathlib,os
+import os
+import itertools
 
 class colors:
     HEADER = '\033[95m'
@@ -12,62 +13,49 @@ class colors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
-
-print(f'''{colors.BOLD+colors.OKGREEN} 
-	 ____               ____  ____                 
-	|  _ \\ __ _ ___ ___|___ \\|  _ \\__      ___ __  
-	| |_) / _` / __/ __| __) | |_) \\ \\ /\\ / / '_ \\ 
-	|  __/ (_| \\__ \\__ \\/ __/|  __/ \\ V  V /| | | |
-	|_|   \\__,_|___/___/_____|_|     \\_/\\_/ |_| |_| v1.1
+print(f'''{colors.BOLD+colors.OKGREEN}
+         ____               ____  ____
+        |  _ \\ __ _ ___ ___|___ \\|  _ \\__      ___ __
+        | |_) / _` / __/ __| __) | |_) \\ \\ /\\ / / '_ \\
+        |  __/ (_| \\__ \\__ \\/ __/|  __/ \\ V  V /| | | |
+        |_|   \\__,_|___/___/_____|_|     \\_/\\_/ |_| |_| v1.1
 
 \t\tCoded By #Nittam | @TheNittam
 \t\t   https://nirmaldahal.com.np
 {colors.ENDC}''')
-print("_"*65+"\n")
+def generate_passwords(word):
+    """
+    Generate common passwords based on a given word.
+    """
+    variations = set(itertools.product(*zip(word.upper(), word.lower())))
+    passwords = [''.join(variation) for variation in variations]
+    passwords.append(word)
+    passwords.append(word.capitalize())
+    passwords.append(word.upper())
+    passwords.append(word.lower())
+    passwords.append(word[::-1])
+    return passwords
+
+def save_passwords(passwords, filename):
+    """
+    Save a list of passwords to a file.
+    """
+    with open(filename+".txt", 'w') as file:
+        for password in passwords:
+            file.write(password + '\n')
+    print(f"\n\n\tPassword list saved to {filename}.txt\n")
 
 def main():
-	file = pathlib.Path("pwd.lst")
-	if file.exists():
-		run()
-	else:
-		CreateConfig()
-		run()
-	pass
-
-def CreateConfig():
-	print (f"Dear {colors.OKGREEN+colors.BOLD+os.getlogin()+colors.ENDC},\n\n\tThe password pattern list {colors.OKGREEN+colors.BOLD}(Pwd.lst){colors.ENDC} is missing,\n\tbut don't worry, I'll make one specifically for you.\n\nRegards,\nYour {colors.OKBLUE+colors.BOLD}@TheNittam{colors.ENDC}")
-	f = open("pwd.lst", "a")
-	f.write("{}123\n{}@123\n{}1234\n{}654\n{}456\n{}789\n{}963")
-	f.close()
-	print("_"*65+"\n")
-
-def run():
-	with open('pwd.lst') as formatlst:
-		word = input("Word/s : ").lower().split(" ")
-
-		if len(word)==1:
-			print(f"Input Type \"{colors.OKGREEN+colors.BOLD}Word{colors.ENDC}\"")
-			word = word[0]
-		else:
-			print(f"Input Type \"{colors.OKGREEN+colors.BOLD}Sentence{colors.ENDC}\"")
-			word = [w[0] for w in word]
-			word = "".join(word)
-		
-		defaultlst = word.replace("\\", "_").replace("/", "_") 
-		pwdlst = input(f"Save as [\"{colors.OKGREEN+colors.BOLD+defaultlst}.txt{colors.ENDC}\"] : ") or defaultlst
-
-		print("_"*65)
-		print(f"\nCreating a List of Common Passwords({colors.OKGREEN+colors.BOLD}"+pwdlst+f".txt{colors.ENDC})")
-		print("_"*65+"\n")
-
-		for x in formatlst:
-			x = x.rstrip('\n').format(word)
-			print(x+"\n"+x.upper()+"\n"+x.capitalize()+"\n")
-			f = open(pwdlst+"_"+time.strftime("%Y%m%d_%H%M%S")+".txt", "a")
-			f.write(x+"\n"+x.upper()+"\n"+x.capitalize()+"\n")
-			f.close()
-	print("_"*65+f"\n\n\tWorking with you has been a true blessing...{colors.OKGREEN+colors.BOLD+os.getlogin()+colors.ENDC}")
-	print("_"*65+"\n")
-
-if __name__ == "__main__":
-	main()
+    """
+    Main function.
+    """
+    word = input("Enter a word to generate common passwords: ")
+    filename = input(f"Save as [\"{colors.OKGREEN+colors.BOLD+word}.txt{colors.ENDC}\"] : ")  or word
+    passwords = generate_passwords(word)
+    print("_"*65)
+    print(f"\nCreating a List of Common Passwords({colors.OKGREEN+colors.BOLD}"+filename+f".txt{colors.ENDC})")
+    print("_"*65+"\n")
+    save_passwords(passwords, filename)
+    print("_"*65+f"\n\n\tWorking with you has been a true blessing...{os.environ['USER']}")
+if __name__ == '__main__':
+    main()
